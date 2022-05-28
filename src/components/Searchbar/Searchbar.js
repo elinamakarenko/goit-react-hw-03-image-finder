@@ -1,31 +1,51 @@
 import { Component } from 'react';
-import shortid from 'shortid';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import { toast } from 'react-toastify';
+// import PropTypes from 'prop-types';
 import s from './Searchbar.module.css';
 
 class Searchbar extends Component {
-    state = {
-        value: '',
-      };
-      valueInputId = shortid.generate();
-     
-      render(){
-          return(
-              <div className={s.searchbar}>
-                   <form className={s.searchForm}>
-             <label htmlFor={this.valueInputId}>
-                 <input className={s.searchFormInput}/>
-                
-             </label>
-             
-             <button className={s.searchFormButton} type="submit">
-          
-        </button>
-             </form>
-             </div>
-          )
-      }
+  state = {
+    value: '',
+  };
+
+  handleChange = event => {
+    this.setState({ value: event.currentTarget.value });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    if (this.state.value.trim() === '') {
+      toast.error('Введите наименование картинки!');
+      return;
+    }
+    this.props.onSubmit(this.state.value);
+    this.reset();
+  };
+
+  reset = () => {
+    this.setState({ value: '' });
+  };
+
+  render() {
+    return (
+      <header className={s.searchbar}>
+        <form className={s.searchForm} onSubmit={this.handleSubmit}>
+          <button className={s.searchFormButton} type="submit">
+            <span className={s.SearchFormButtonLabel}></span>
+          </button>
+
+          <input
+            onChange={this.handleChange}
+            className={s.searchFormInput}
+            type="text"
+            autoComplete="off"
+            autoFocus
+            placeholder="Search images and photos"
+          />
+        </form>
+      </header>
+    );
+  }
 }
 
 export default Searchbar;
