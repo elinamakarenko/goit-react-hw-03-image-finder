@@ -8,4 +8,7 @@ const Button = ({ onClick }) => {
     </button>
   );
 };
+
+Button.
+
 export default Button;
