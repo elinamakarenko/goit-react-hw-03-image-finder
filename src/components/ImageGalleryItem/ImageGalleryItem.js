@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import s from './ImageGalleryItem.module.css';
 function ImageGalleryItem({ name, image }) {
   return (
