@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { toast } from 'react-toastify';
 import fetchPixabay from 'services/fetchPixabay';
@@ -16,7 +16,7 @@ const Status = {
 
 class ImageGallery extends Component {
   state = {
-    images: null,
+    images: [],
     page: 1,
     error: null,
     status: Status.IDLE,
@@ -27,8 +27,13 @@ class ImageGallery extends Component {
     const nextName = this.props.searchValue;
     const prevPage = prevState.page;
     const nextPage = this.state.page;
-    console.log(prevName, nextName, prevPage, nextPage);
-
+    if (nextName !== prevName) {
+      this.setState({ images: [], page: 1 });
+    }
+    window.scrollBy({
+      top: document.body.clientHeight,
+      behavior: 'smooth',
+    });
     if (prevName !== nextName || prevPage !== nextPage) {
       this.setState({ status: Status.PENDING });
 
@@ -37,14 +42,10 @@ class ImageGallery extends Component {
           if (image.hits.length) {
             this.setState(prevState => {
               const { images } = prevState;
-              if (images) {
-                return {
-                  images: [...images, image.hits],
-                  status: Status.RESOLVED,
-                };
-              } else {
-                return { images: image.hits, status: Status.RESOLVED };
-              }
+              return {
+                images: [...images, ...image.hits],
+                status: Status.RESOLVED,
+              };
             });
           } else {
             return Promise.reject(new Error(`Нет картинок ${nextName}`));
@@ -85,4 +86,7 @@ class ImageGallery extends Component {
     }
   }
 }
+ImageGallery.propTypes = {
+  searchValue: PropTypes.string,
+};
 export default ImageGallery;

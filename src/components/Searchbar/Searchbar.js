@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { toast } from 'react-toastify';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import s from './Searchbar.module.css';
 
 class Searchbar extends Component {
@@ -37,6 +37,7 @@ class Searchbar extends Component {
           <input
             onChange={this.handleChange}
             className={s.searchFormInput}
+            value={this.state.value}
             type="text"
             autoComplete="off"
             autoFocus
@@ -47,5 +48,7 @@ class Searchbar extends Component {
     );
   }
 }
-
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func,
+};
 export default Searchbar;

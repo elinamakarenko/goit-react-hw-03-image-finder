@@ -5,7 +5,6 @@ const perPage = 12;
 const orientation = 'horizontal';
 const imageType = 'photo';
 function fetchPixabay(searchValue, page) {
-  console.log(searchValue, page);
   return fetch(
     `${URL}?key=${KEY}&q=${searchValue}&image_type=${imageType}&orientation=${orientation}&page=${page}&per_page=${perPage}`
   ).then(response => {

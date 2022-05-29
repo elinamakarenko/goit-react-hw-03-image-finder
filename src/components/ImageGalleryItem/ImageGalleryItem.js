@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import s from './ImageGalleryItem.module.css';
 function ImageGalleryItem({ name, image }) {
   return (
@@ -7,5 +7,9 @@ function ImageGalleryItem({ name, image }) {
     </li>
   );
 }
-
+ImageGalleryItem.propTypes = {
+  id: PropTypes.string,
+  image: PropTypes.string,
+  name: PropTypes.string,
+};
 export default ImageGalleryItem;
