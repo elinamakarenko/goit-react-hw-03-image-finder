@@ -5,6 +5,7 @@ import fetchPixabay from 'services/fetchPixabay';
 import ImageGalleryItem from '../ImageGalleryItem';
 import Button from 'components/Button';
 import Loader from 'components/Loader';
+import Modal from 'components/Modal';
 import s from './ImageGallery.module.css';
 
 const Status = {
@@ -19,6 +20,8 @@ class ImageGallery extends Component {
     images: [],
     page: 1,
     error: null,
+    showModal: false,
+    imageModal: null,
     status: Status.IDLE,
   };
 
@@ -61,8 +64,22 @@ class ImageGallery extends Component {
     });
   };
 
+  toggleModal = () => {
+    this.setState(prevState => ({
+      showModal: !prevState.showModal,
+    }));
+  };
+
+  showModal = event => {
+    const { images } = this.state;
+    this.setState({
+      imageModal: images.find(img => img.webformatURL === event.target.src),
+    });
+    this.toggleModal();
+  };
+
   render() {
-    const { images, error, status } = this.state;
+    const { images, error, showModal, status } = this.state;
 
     if (status === 'pending') {
       return <Loader />;
@@ -73,14 +90,25 @@ class ImageGallery extends Component {
     }
 
     if (status === 'resolved') {
+      const { imageModal } = this.state;
       return (
         <>
           <ul className={s.imageGallery}>
             {images.map(({ id, tags, webformatURL }) => (
-              <ImageGalleryItem key={id} image={webformatURL} name={tags} />
+              <ImageGalleryItem
+                key={id}
+                image={webformatURL}
+                name={tags}
+                onClick={this.showModal}
+              />
             ))}
           </ul>
           <Button onClick={this.loadMoreClick} />
+          {showModal && (
+            <Modal onClose={this.toggleModal}>
+              <img src={imageModal.largeImageURL} alt={imageModal.tags} />
+            </Modal>
+          )}
         </>
       );
     }

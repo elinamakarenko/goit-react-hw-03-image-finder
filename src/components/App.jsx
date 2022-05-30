@@ -14,11 +14,12 @@ class App extends Component {
   };
 
   render() {
+    const { searchValue } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.formSubmit} />
         <ToastContainer />
-        <ImageGallery searchValue={this.state.searchValue} />
+        <ImageGallery searchValue={searchValue} />
       </>
     );
   }
