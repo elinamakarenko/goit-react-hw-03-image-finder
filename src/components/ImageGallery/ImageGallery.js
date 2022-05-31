@@ -86,7 +86,8 @@ class ImageGallery extends Component {
     }
 
     if (status === 'rejected') {
-      return toast.error(error.message);
+      toast.error(error.message);
+      return;
     }
 
     if (status === 'resolved') {
