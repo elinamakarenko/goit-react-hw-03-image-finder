@@ -54,7 +54,10 @@ class ImageGallery extends Component {
             return Promise.reject(new Error(`Нет картинок ${nextName}`));
           }
         })
-        .catch(error => this.setState({ error, status: Status.REJECTED }));
+        .catch(error => {
+          toast.error(error.message);
+          this.setState({ error, status: Status.REJECTED });
+        });
     }
   }
 
@@ -79,14 +82,13 @@ class ImageGallery extends Component {
   };
 
   render() {
-    const { images, error, showModal, status } = this.state;
+    const { images, showModal, status } = this.state;
 
     if (status === 'pending') {
       return <Loader />;
     }
 
     if (status === 'rejected') {
-      toast.error(error.message);
       return;
     }
 
