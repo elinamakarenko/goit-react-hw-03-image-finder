@@ -82,41 +82,31 @@ class ImageGallery extends Component {
   };
 
   render() {
-    const { images, showModal, status } = this.state;
-
-    if (status === 'pending') {
-      return <Loader />;
-    }
-
-    if (status === 'rejected') {
-      return;
-    }
-
-    if (status === 'resolved') {
-      const { imageModal } = this.state;
-      return (
-        <>
-          <ul className={s.imageGallery}>
-            {images.map(({ id, tags, webformatURL }) => (
-              <ImageGalleryItem
-                key={id}
-                image={webformatURL}
-                name={tags}
-                onClick={this.showModal}
-              />
-            ))}
-          </ul>
-          <Button onClick={this.loadMoreClick} />
-          {showModal && (
-            <Modal onClose={this.toggleModal}>
-              <img src={imageModal.largeImageURL} alt={imageModal.tags} />
-            </Modal>
-          )}
-        </>
-      );
-    }
+    const { images, imageModal, showModal, status } = this.state;
+    return (
+      <>
+        <ul className={s.imageGallery}>
+          {images.map(({ id, tags, webformatURL }) => (
+            <ImageGalleryItem
+              key={id}
+              image={webformatURL}
+              name={tags}
+              onClick={this.showModal}
+            />
+          ))}
+        </ul>
+        {status === 'pending' && <Loader />}
+        {status === 'resolved' && <Button onClick={this.loadMoreClick} />}
+        {showModal && (
+          <Modal onClose={this.toggleModal}>
+            <img src={imageModal.largeImageURL} alt={imageModal.tags} />
+          </Modal>
+        )}
+      </>
+    );
   }
 }
+
 ImageGallery.propTypes = {
   searchValue: PropTypes.string,
 };
